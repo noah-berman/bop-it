@@ -45,6 +45,13 @@ img {
   opacity: 1;
 }
 
+form {
+  position: absolute;
+  left: 385px;
+  top: 400px;
+  border: 1px solid black;
+}
+
 #box {
   width: 100px;
   height: 130px;

@@ -6,21 +6,28 @@ let bopItToggle = false;
 let twistItToggle = false;
 let pullItToggle = false;
 
+let gameLevel = 1
+let globalResetTimer = .05
+
 
 document.addEventListener('DOMContentLoaded', function(event) {
 
+  // DOM Element Variables //
   const bopit = document.getElementsByClassName('bopit')[0]
   const bopitBox = document.getElementById('box')
   const scrollBar = document.getElementById('scrollbar')
-
   const startButton = document.getElementById('start')
-  startButton.addEventListener('click', gameLogic)
-
-
-
+  const inputContainer = document.getElementById("input-container")
+  const inputField = document.getElementById('input-field')
+  const inputFieldButton = document.getElementById('input-field-button')
 
   // Event Listeners
+  startButton.addEventListener('click', introDance)
+  inputField.addEventListener('keyup', pullLog)
+  bopitBox.addEventListener('click', bopLog);
+  scrollBar.addEventListener('scroll', twistLog);
 
+  // Event Listener Callbacks
   function bopLog() {
     if (bopItToggle === true) {
       bopItToggle = false;
@@ -30,28 +37,20 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   function twistLog() {
     if (twistItToggle === true) {
-      console.log('Twist it!');
       twistItToggle = false;
-      console.log(twistItToggle);
       twistItSuccess = true;
     }
   }
 
   function pullLog() {
     if (pullItToggle === true) {
-      console.log('Pull it!');
-      pullItToggle = false;
-      console.log(pullItToggle);
+      if (inputField.value === 'pull') {
       pullItSuccess = true;
+      inputField.value = '';
+      pullItToggle = false;
+      }
     }
   }
-
-
-  bopitBox.addEventListener('click', bopLog);
-
-  scrollBar.addEventListener('scroll', twistLog);
-
-  // textBox.addEventListener('', pullLog)
 
 })
 
@@ -80,7 +79,7 @@ function bopItTimerFunction() {
       console.log('success!');
       clearInterval(counter);
       bopItSuccess = false;
-      gameLogic();
+      bopItLevelReset();
     }
     count--;
 
@@ -107,11 +106,11 @@ function twistItTimerFunction() {
       return;
     }
 
-    else if (twistItSuccess === true) { // If BopIt was successful keep playing
+    else if (twistItSuccess === true) { // If TwistIt was successful keep playing
       console.log('success!');
       clearInterval(counter);
       twistItSuccess = false;
-      gameLogic();
+      twistItLevelReset();
     }
     count--;
 
@@ -121,12 +120,22 @@ function twistItTimerFunction() {
 
 }
 
+// function pullItDOM() {
+//   console.log('pullitDOM!');
+//   document.getElementById('input-container').style.visibility = 'visibile';
+//   debugger;
+//   pullItTimerFunction();
+// }
+
 function pullItTimerFunction() {
-  let count = 200;
+  console.log('PULL IT!');
+  document.getElementById('input-container').style.display = 'block';
+
+  let count = 400;
 
   let counter = setInterval(timer, 10); //10 will  run it every 100th of a second
 
-  pullItToggle = false;
+  pullItToggle = true;
 
   function timer() {
 
@@ -137,49 +146,93 @@ function pullItTimerFunction() {
       return;
     }
 
-    else if (pullItSuccess === true) { // If BopIt was successful keep playing
+    else if (pullItSuccess === true) { // If PullIt was successful keep playing
       console.log('success!');
       clearInterval(counter);
-      pullItSuccessVariable = false;
-      gameLogic();
+      pullItSuccess = false;
+      document.getElementById('input-container').style.display = 'none'
+      pullItLevelReset();
     }
     count--;
 
     document.getElementById("timer").innerHTML=count /100;
 
   }
-
 }
 
+function bopItLevelReset() {
 
+  // Calculates the amount of time between levels based on level and globalResetTimer (increase the latter to make the game harder)
+  function calculateLevelResetTime() {
+    var num = 1 - (gameLevel * globalResetTimer);
+    return (num * 1000);
+  }
+
+  // Replaces the image with "activated" version to indicate succesful completion of the task
+  document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-bopit-imprint.png';
+  setTimeout(
+    function () { console.log('next level!');
+    document.getElementsByClassName('bopit')[0].src='assets/BopIt-image.png'; gameLogic()}, //reset the game loop
+    calculateLevelResetTime());
+}
+
+function twistItLevelReset() {
+
+  // Calculates the amount of time between levels based on level and globalResetTimer (increase the latter to make the game harder)
+  function calculateLevelResetTime() {
+    var num = 1 - (gameLevel * globalResetTimer);
+    return (num * 1000);
+  }
+
+  // Replaces the image with "activated" version to indicate succesful completion of the task
+  document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-twisted.png';
+  setTimeout(
+    function () {console.log('next level!');
+    document.getElementsByClassName('bopit')[0].src='assets/BopIt-image.png'; gameLogic()}, //reset the game loop
+    calculateLevelResetTime());
+}
+
+// Gameflow between levels
+function pullItLevelReset() {
+
+  // Calculates the amount of time between levels based on level and globalResetTimer (increase the latter to make the game harder)
+  function calculateLevelResetTime() {
+    var num = 1 - (gameLevel * globalResetTimer);
+    return (num * 1000);
+  }
+
+  // Replaces the image with "activated" version to indicate succesful completion of the task
+  document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-pulled.png';
+  setTimeout(
+    function () {console.log('next level!');
+    document.getElementsByClassName('bopit')[0].src='assets/BopIt-image.png'; gameLogic()}, //reset the game loop
+    calculateLevelResetTime());
+}
+
+//Picks a number between 1 and 3 to determine which "game" to play
 function gameLogic() {
 
-  introDance();
-
-  setTimeout(function() {
-
-    let command = Math.floor(Math.random() * 2) +
-    1
-
-
-
-    switch (command) {
-      case 1:
-      bopItTimerFunction();
-      break;
-      case 2:
-      twistItTimerFunction();
-      break;
-      case 3:
-      pullItTimerFunction();
-      break;
-    }
-  }, 2000);
+  let command = Math.floor(Math.random() * 3) +
+  1
+  switch (command) {
+    case 1:
+    bopItTimerFunction();
+    break;
+    case 2:
+    twistItTimerFunction();
+    break;
+    case 3:
+    pullItTimerFunction();
+    break;
+  }
 }
 
+// Introductory Dancing of the Bopit
 function introDance() {
   let danceCounter = 4;
   let danceInterval = setInterval(rotateBopit, 500);
+
+  document.getElementById('start').style.visibility = 'hidden';
 
   function rotateBopit() {
     if (danceCounter > 0 ){
@@ -214,7 +267,10 @@ function introDance() {
       //   document.getElementsByClassName('bopit')[0].setAttribute("id", 'bopit-angle-centered');
       //   danceCounter--;
       // }
-    } else { clearInterval(danceInterval)}
+    } else {
+      clearInterval(danceInterval);
+      gameLogic();
+    };
 
   }
 }
