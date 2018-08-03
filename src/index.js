@@ -9,6 +9,13 @@ let pullItToggle = false;
 let gameLevel = 1
 let globalResetTimer = .05
 
+let globalLevelTimer = 200
+let globalLevelTimerPull = 350
+let globalLevelProgression = 10
+
+let bopItInstructionToggle = true
+let twistItInstructionToggle = true
+let pullItInstructionToggle = true
 
 document.addEventListener('DOMContentLoaded', function(event) {
 
@@ -17,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const bopitBox = document.getElementById('box')
   const scrollBar = document.getElementById('scrollbar')
   const startButton = document.getElementById('start')
+  const highscoreButton = document.getElementById('highscore')
   const inputContainer = document.getElementById("input-container")
   const inputField = document.getElementById('input-field')
   const inputFieldButton = document.getElementById('input-field-button')
@@ -26,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   inputField.addEventListener('keyup', pullLog)
   bopitBox.addEventListener('click', bopLog);
   scrollBar.addEventListener('scroll', twistLog);
+  highscoreButton.addEventListener('click', highScore)
 
   // Event Listener Callbacks
   function bopLog() {
@@ -52,15 +61,29 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
   }
 
+
 })
+
+
 
 //Timers//
 
 function bopItTimerFunction() {
   console.log('BOP IT!')
-  let count = 200;
+  document.getElementsByTagName('h2')[0].innerHTML = "Bop It!"
+
+  let count = globalLevelTimer;
 
   let counter = setInterval(timer, 10); //10 will  run it every 100th of a second
+
+  globalLevelTimer -= globalLevelProgression
+  globalLevelTimerPull -= globalLevelProgression
+
+  if (bopItInstructionToggle === true) {
+    document.getElementById('instructions').style.display = 'block';
+    document.getElementById('instructions').innerHTML = "Press the purple Bop It button!"
+  }
+  bopItInstructionToggle = false
 
   bopItToggle = true;
 
@@ -71,6 +94,10 @@ function bopItTimerFunction() {
       bopItToggle = false;
       clearInterval(counter);
       console.log('Game over!');
+      document.getElementsByTagName('h2')[0].style.color = "red"
+      document.getElementsByTagName('h2')[0].style.left = "300px"
+      document.getElementsByTagName('h2')[0].innerHTML = "Awww Game Over!"
+      document.getElementById('instructions').style.display = 'none';
       return;
     }
 
@@ -79,6 +106,9 @@ function bopItTimerFunction() {
       console.log('success!');
       clearInterval(counter);
       bopItSuccess = false;
+      document.getElementById('instructions').innerHTML = '';
+      document.getElementById('instructions').style.display = 'none';
+      increaseScore();
       bopItLevelReset();
     }
     count--;
@@ -91,9 +121,19 @@ function bopItTimerFunction() {
 
 function twistItTimerFunction() {
   console.log('TWIST IT!')
+  document.getElementsByTagName('h2')[0].innerHTML = "Twist It!"
   let count = 200;
 
   let counter = setInterval(timer, 10); //10 will  run it every 100th of a second
+
+  if (twistItInstructionToggle === true) {
+      document.getElementById('instructions').style.display = 'block';
+      document.getElementById('instructions').innerHTML = "Scroll the yellow handle!"}
+
+  twistItInstructionToggle = false
+
+  globalLevelTimer -= globalLevelProgression
+  globalLevelTimerPull -= globalLevelProgression
 
   twistItToggle = true;
 
@@ -103,6 +143,10 @@ function twistItTimerFunction() {
     {
       clearInterval(counter);
       console.log('Game over!');
+      document.getElementsByTagName('h2')[0].style.color = "red"
+      document.getElementsByTagName('h2')[0].style.left = "300px"
+      document.getElementsByTagName('h2')[0].innerHTML = "Awww Game Over!"
+      document.getElementById('instructions').style.display = 'none';
       return;
     }
 
@@ -110,6 +154,9 @@ function twistItTimerFunction() {
       console.log('success!');
       clearInterval(counter);
       twistItSuccess = false;
+      document.getElementById('instructions').innerHTML = '';
+      document.getElementById('instructions').style.display = 'none';
+      increaseScore();
       twistItLevelReset();
     }
     count--;
@@ -129,11 +176,21 @@ function twistItTimerFunction() {
 
 function pullItTimerFunction() {
   console.log('PULL IT!');
+  document.getElementsByTagName('h2')[0].innerHTML = "Pull It!"
   document.getElementById('input-container').style.display = 'block';
+  document.getElementById('input-field').focus();
 
-  let count = 400;
+  let count = globalLevelTimerPull;
 
   let counter = setInterval(timer, 10); //10 will  run it every 100th of a second
+
+  if (pullItInstructionToggle === true) {
+     document.getElementById('instructions').innerHTML = "Type 'pull' into the text box!"}
+
+  pullItInstructionToggle = false;
+
+  globalLevelTimer -= globalLevelProgression
+  globalLevelTimerPull -= globalLevelProgression
 
   pullItToggle = true;
 
@@ -143,6 +200,12 @@ function pullItTimerFunction() {
     {
       clearInterval(counter);
       console.log('Game over!');
+      document.getElementsByTagName('h2')[0].style.color = "red"
+      document.getElementsByTagName('h2')[0].style.left = "300px"
+      document.getElementsByTagName('h2')[0].innerHTML = "Awww Game Over!"
+      document.getElementById('instructions').style.display = 'none';
+      document.getElementById('input-field').style.display = 'none';
+      document.getElementById('highscore-form').style.display = 'block';
       return;
     }
 
@@ -150,7 +213,10 @@ function pullItTimerFunction() {
       console.log('success!');
       clearInterval(counter);
       pullItSuccess = false;
-      document.getElementById('input-container').style.display = 'none'
+      document.getElementById('input-container').style.display = 'none';
+      document.getElementById('instructions').innerHTML = '';
+      document.getElementById('instructions').style.display = 'none';
+      increaseScore();
       pullItLevelReset();
     }
     count--;
@@ -168,6 +234,11 @@ function bopItLevelReset() {
     return (num * 1000);
   }
 
+  document.getElementsByTagName('h2')[0].innerHTML = "Nicely Done!"
+
+  // Creates game difficulty progression
+  globalResetTimer += .05;
+
   // Replaces the image with "activated" version to indicate succesful completion of the task
   document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-bopit-imprint.png';
   setTimeout(
@@ -183,6 +254,11 @@ function twistItLevelReset() {
     var num = 1 - (gameLevel * globalResetTimer);
     return (num * 1000);
   }
+
+  document.getElementsByTagName('h2')[0].innerHTML = "Good work!"
+
+  // Creates game difficulty progression
+  globalResetTimer += .05;
 
   // Replaces the image with "activated" version to indicate succesful completion of the task
   document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-twisted.png';
@@ -201,6 +277,11 @@ function pullItLevelReset() {
     return (num * 1000);
   }
 
+  document.getElementsByTagName('h2')[0].innerHTML = "Great job!"
+
+  // Creates game difficulty progression
+  globalResetTimer += .05;
+
   // Replaces the image with "activated" version to indicate succesful completion of the task
   document.getElementsByClassName('bopit')[0].src='assets/BopIt-image-pulled.png';
   setTimeout(
@@ -212,8 +293,9 @@ function pullItLevelReset() {
 //Picks a number between 1 and 3 to determine which "game" to play
 function gameLogic() {
 
-  let command = Math.floor(Math.random() * 3) +
-  1
+  console.log(globalLevelTimerPull)
+
+  let command = Math.floor(Math.random() * 3) + 1
   switch (command) {
     case 1:
     bopItTimerFunction();
@@ -233,6 +315,7 @@ function introDance() {
   let danceInterval = setInterval(rotateBopit, 500);
 
   document.getElementById('start').style.visibility = 'hidden';
+  document.getElementById('highscore').style.visibility = 'hidden';
 
   function rotateBopit() {
     if (danceCounter > 0 ){
@@ -241,23 +324,22 @@ function introDance() {
         console.log(danceCounter);
         document.getElementsByClassName('bopit')[0].setAttribute("id", 'bopit-angle-right');
         danceCounter--;
-        document.getElementsByTagName('title')
+        document.getElementsByTagName('title');
+        document.getElementsByTagName('h2')[0].innerHTML = "Ready?"
       }
       else if (document.getElementsByClassName('bopit')[0].id === 'bopit-angle-right') {
         console.log(2);
-        console.log(danceCounter);
         document.getElementsByClassName('bopit')[0].setAttribute("id", 'bopit-angle-left');
         danceCounter--;
       }
       else if (document.getElementsByClassName('bopit')[0].id === 'bopit-angle-left') {
         console.log(3);
-        console.log(danceCounter);
         document.getElementsByClassName('bopit')[0].setAttribute("id", 'bopit-image-up');
         danceCounter--;
+        document.getElementsByTagName('h2')[0].innerHTML = "Leggo!"
       }
       else if (document.getElementsByClassName('bopit')[0].id === 'bopit-image-up') {
         console.log(4);
-        console.log(danceCounter);
         document.getElementsByClassName('bopit')[0].setAttribute("id", 'bopit-angle-centered')
         danceCounter--;
       }
@@ -269,8 +351,20 @@ function introDance() {
       // }
     } else {
       clearInterval(danceInterval);
+      document.getElementsByTagName('h2')[0].innerHTML = ''
       gameLogic();
     };
-
   }
+}
+
+function increaseScore() {
+  let scoreString = document.getElementById('scoreval').innerHTML
+  let scoreNum = parseInt(scoreString)
+  document.getElementById('scoreval').innerHTML = scoreNum + 1
+}
+
+function highScore(){
+  Array.from(document.getElementsByTagName('section')).forEach(function(element) {element.style.display = 'none'})
+
+  document.getElementById('highscore-table').style.display = 'block'
 }

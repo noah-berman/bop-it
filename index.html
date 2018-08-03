@@ -1,35 +1,66 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" language="en">
-    <title>Bop It!</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="src/index.js"></script>
-</head>
-<body><header>
-  <h2> Bop It! </h2>
-</header>
+  <head>
+      <meta charset="utf-8" language="en">
+      <title>Bop It!</title>
+      <link rel="stylesheet" href="css/style.css">
+      <script type="text/javascript" src="src/index.js"></script>
+  </head>
+  <body>
+    <header>
+      <h2> Bop It! </h2>
+    </header>
 
-<section>
-  <img class="bopit" id="bopit-angle-centered" src="assets/BopIt-image.png" alt="Bop It">
-  <div id="box"></div>
-  <div id="scrollbar">lorem IPSUM RANDOM GIBBERISH TKEATEAT LJEALTJ EALJTEL AJTLEKATL EAKTEAT LEATLKEA TLKEAL TEKALTE KALTKEA LTKEALT KELAKT TEATEATEA TEATEATE TEATETEA TEATEATEA TEATEATEA TEATEATE TEATEA ELAKTELAK</div>
-</section>
+    <section>
+      <span id="score">Score:<div id="scoreval">0</div>
+      </span>
+    </section>
 
-<section>
-  <button id="start">Start</button>
-</section>
+    <section>
+      <img class="bopit" id="bopit-angle-centered" src="assets/BopIt-image.png" alt="Bop It">
+      <div id="box"></div>
+      <div id="scrollbar">lorem IPSUM RANDOM GIBBERISH TKEATEAT LJEALTJ EALJTEL AJTLEKATL EAKTEAT LEATLKEA TLKEAL TEKALTE KALTKEA LTKEALT KELAKT TEATEATEA TEATEATE TEATETEA TEATEATEA TEATEATEA TEATEATE TEATEA ELAKTELAK</div>
+    </section>
 
-<section>
-  <span id="timer"></span>
-</section>
+    <section>
+      <button id="start">Start</button>
+    </section>
 
-<center><form id="input-container" style="display:none" class="" action="index.html" method="post">
-  <input id="input-field" type="text" value=""></input>
-  <input id="input-field-button" type="button" value=""></input>
-</form></center>
+    <section>
+      <p id="instructions" style="display:block"></p>
+    </section>
 
+    <section>
+      <button id="highscore">High Scores</button>
+    </section>
 
+    <section>
+      <span id="timer"></span>
+    </section>
 
-</body>
+    <section id="highscore-form" style="display:none">
+      <form action='XXXXXXXXXXXXX'>
+        Enter your username:<br>
+        <input type="text" name="username" value="Username">
+        <br><br>
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+
+    <section id="highscore-table" style="display:none">
+      <table>
+        <tr>
+          <th>Username</th>
+          <th>Score</th>
+        </tr>
+
+      </table>
+
+    <center>
+      <form id="input-container" style="display:none" class="" action="index.html" method="post">
+      <input id="input-field" style="font-size:25px" maxlength="4" size="4" type="text" value=""></input>
+    </form>
+  </center>
+
+  </body>
 </html>
