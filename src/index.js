@@ -74,7 +74,7 @@ function bopItTimerFunction() {
 
   let count = globalLevelTimer;
 
-  let counter = setInterval(timer, 10); //10 will  run it every 100th of a second
+  let counter = setInterval(timer, 10); //10 will run it every 100th of a second
 
   globalLevelTimer -= globalLevelProgression
   globalLevelTimerPull -= globalLevelProgression
@@ -98,6 +98,8 @@ function bopItTimerFunction() {
       document.getElementsByTagName('h2')[0].style.left = "300px"
       document.getElementsByTagName('h2')[0].innerHTML = "Awww Game Over!"
       document.getElementById('instructions').style.display = 'none';
+      document.getElementById('input-field').style.display = 'none';
+      document.getElementById('highscore-form').style.display = 'block';
       return;
     }
 
@@ -147,6 +149,8 @@ function twistItTimerFunction() {
       document.getElementsByTagName('h2')[0].style.left = "300px"
       document.getElementsByTagName('h2')[0].innerHTML = "Awww Game Over!"
       document.getElementById('instructions').style.display = 'none';
+      document.getElementById('input-field').style.display = 'none';
+      document.getElementById('highscore-form').style.display = 'block';
       return;
     }
 
@@ -167,12 +171,6 @@ function twistItTimerFunction() {
 
 }
 
-// function pullItDOM() {
-//   console.log('pullitDOM!');
-//   document.getElementById('input-container').style.visibility = 'visibile';
-//   debugger;
-//   pullItTimerFunction();
-// }
 
 function pullItTimerFunction() {
   console.log('PULL IT!');

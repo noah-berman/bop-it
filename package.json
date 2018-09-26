@@ -1,0 +1,19 @@
+{
+  "name": "bop-it",
+  "version": "1.0.0",
+  "description": "Bop-it!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noah-berman/bop-it.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noah-berman/bop-it/issues"
+  },
+  "homepage": "https://github.com/noah-berman/bop-it#readme"
+}
