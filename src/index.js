@@ -1,3 +1,5 @@
+
+
 let bopItSuccess;
 let twistItSuccess;
 let pullItSuccess;
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const bopitBox = document.getElementById('box')
   const scrollBar = document.getElementById('scrollbar')
   const startButton = document.getElementById('start')
-  const highscoreButton = document.getElementById('highscore')
+  const highscoreButton = document.getElementById('highscore-button')
   const inputContainer = document.getElementById("input-container")
   const inputField = document.getElementById('input-field')
   const inputFieldButton = document.getElementById('input-field-button')
@@ -313,7 +315,7 @@ function introDance() {
   let danceInterval = setInterval(rotateBopit, 500);
 
   document.getElementById('start').style.visibility = 'hidden';
-  document.getElementById('highscore').style.visibility = 'hidden';
+  document.getElementById('highscore-button').style.visibility = 'hidden';
 
   function rotateBopit() {
     if (danceCounter > 0 ){
@@ -364,5 +366,13 @@ function increaseScore() {
 function highScore(){
   Array.from(document.getElementsByTagName('section')).forEach(function(element) {element.style.display = 'none'})
 
-  document.getElementById('highscore-table').style.display = 'block'
+  const endPoint = 'http://localhost:3000/api/v1/leaderboards'
+  fetch(endPoint).then(res=>res.json()).then(json => json.forEach(leaderboardEntry => {
+    const markup = `<tr>
+                      <td> ${leaderboardEntry.user_name} </td>
+                      <td> ${leaderboardEntry.score} </td>
+                    </tr>`
+    document.getElementById('highscore-table').innerHTML += markup
+  }))
+  document.getElementById('highscore-section').style.display = 'block'
 }
